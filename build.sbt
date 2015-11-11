@@ -6,7 +6,8 @@ scalaVersion := "2.11.6"
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
  
-resolvers ++= Seq("Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/")
+resolvers ++= Seq("Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
+                  "Maven Repository" at "http://repo1.maven.org/maven2/")
  
 libraryDependencies ++=
 {
