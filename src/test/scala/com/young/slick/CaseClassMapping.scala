@@ -1,7 +1,10 @@
+package com.young.slick
+
 import scala.concurrent.Await
-import scala.concurrent.ExecutionContext.Implicits.global
+import slick.driver.MySQLDriver.api._
+import slick.lifted.ProvenShape.proveShapeOf
 import scala.concurrent.duration.Duration
-import slick.driver.H2Driver.api._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object CaseClassMapping extends App {
 
@@ -19,7 +22,7 @@ object CaseClassMapping extends App {
       users += User("Fred Smith"),
 
       // print the users (select * from USERS)
-      users.result.map(println)
+      users.result.map(y=>println(y))
     )), Duration.Inf)
   } finally db.close
 }

@@ -30,7 +30,9 @@ libraryDependencies ++=
          "mysql" % "mysql-connector-java" % "5.1.17",
          "com.zaxxer" % "HikariCP" % "2.4.0",
          "com.h2database" % "h2" % "1.4.188",
-         "org.slf4j" % "slf4j-nop" % "1.6.4"
-         
+         "org.slf4j" % "slf4j-nop" % "1.6.4",
+         "org.json4s" %% "json4s-core" % "3.3.0",
+         "org.json4s" %% "json4s-native" % "3.3.0",
+         "io.spray" %% "spray-json" % "1.3.2"
          )
 }

@@ -1,14 +1,16 @@
-import scala.concurrent.{ Future, Await }
+package com.young.slick
+
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
+import scala.concurrent.Future
 import slick.backend.DatabasePublisher
-//import slick.driver.H2Driver.api._
 import slick.driver.MySQLDriver.api._
+import scala.concurrent.duration.Duration
 
 // The main application
 object HelloSlick extends App {
   //val db = Database.forConfig("h2mem1")
-  val db = Database.forURL(url = "jdbc:mysql://localhost:3306/slick?useUnicode=true&amp;characterEncoding=UTF-8", user = "root", password = "yangyong", driver = "com.mysql.jdbc.Driver")
+  val db = Database.forURL(url = "jdbc:mysql://localhost:3306/slick?useUnicode=true&amp;characterEncoding=UTF-8", user = "root", password = "", driver = "com.mysql.jdbc.Driver")
   println(db.createSession())
   try {
 

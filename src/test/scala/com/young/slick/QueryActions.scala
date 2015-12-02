@@ -1,8 +1,10 @@
-import slick.driver.H2Driver.api._
+package com.young.slick
+
 import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 import scala.concurrent.ExecutionContext.Implicits.global
-import slick.dbio.DBIO
+import scala.concurrent.duration.Duration
+
+import slick.driver.MySQLDriver.api._
 
 // Demonstrates various ways of reading data
 object QueryActions extends App {
