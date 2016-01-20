@@ -11,7 +11,7 @@ resolvers ++= Seq("Typesafe Repository" at "http://repo.typesafe.com/typesafe/re
 
 libraryDependencies ++= {
   val akka_version = "2.3.12"
-  val spray_version = "1.3.1"
+  val spray_version = "1.3.2"
   val slick_version = "3.0.2"
   val jackson_version = "1.9.13"
   Seq("com.typesafe.akka" %% "akka-actor" % akka_version,
@@ -39,6 +39,7 @@ libraryDependencies ++= {
     "org.apache.httpcomponents" % "httpcore" % "4.4.4",
     "org.apache.httpcomponents" % "httpmime" % "4.5.1",
     "org.codehaus.jackson" % "jackson-core-asl" % jackson_version,
-    "org.codehaus.jackson" % "jackson-mapper-asl" % jackson_version
+    "org.codehaus.jackson" % "jackson-mapper-asl" % jackson_version,
+    "com.thoughtworks.xstream" % "xstream" % "1.4.8"
   )
 }
