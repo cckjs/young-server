@@ -2,6 +2,8 @@ package com.young.java.util.http;
 
 import com.young.scala.weixin.entity.WeixinResponse;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -21,11 +23,13 @@ import java.util.Map;
 
 public class HttpUtils {
 
+	private static Log log = LogFactory.getLog(HttpUtils.class);
+
 	private HttpClient client;
 
 	private String sendCharset = "utf-8";
 
-	private int timeout = 1000;
+	private int timeout = 10000;
 
 	public HttpUtils() {
 		this.client = HttpClients.createDefault();
@@ -41,12 +45,16 @@ public class HttpUtils {
 	public WeixinResponse sendRequest(String uri, HttpMethod method,
 			Map<String, String> params) throws UnsupportedOperationException,
 			IOException {
+		long start = System.currentTimeMillis();
 		HttpUriRequest request = createRequest(uri, method, params);
+		log.info("send request url=["+uri+"],method=["+method+"],params=["+params+"]");
 		HttpResponse response = client.execute(request);
+		log.info("receive response cost time ["+(System.currentTimeMillis()-start)+"]");
 		WeixinResponse weixinResponse = new WeixinResponse();
 		weixinResponse.setContent(IOUtils.toString(response.getEntity().getContent(), sendCharset));
 		weixinResponse.setMessage(response.getStatusLine().getReasonPhrase());
 		weixinResponse.setStateCode(response.getStatusLine().getStatusCode());
+		log.info("response ="+weixinResponse);
 		return weixinResponse;
 	}
 
