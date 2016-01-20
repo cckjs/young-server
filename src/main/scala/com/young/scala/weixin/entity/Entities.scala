@@ -25,6 +25,8 @@ class WeixinServer extends ErrorMessage{
   @BeanProperty var ip_list:Array[String] = Array[String]()
 }
 
+
+
 case class GetAccessTokenParam(grant_type: String, appid: String, secret: String)
 
 

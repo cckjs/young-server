@@ -5,5 +5,5 @@ package com.young.scala.weixin.util
  */
 class EntryUtils {
 
-  
+
 }

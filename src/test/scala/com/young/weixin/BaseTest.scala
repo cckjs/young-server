@@ -14,5 +14,5 @@ trait BaseTest {
 
   val configFile = "E:\\project\\young\\scala\\young-server\\src\\main\\resources\\api-config.xml"
 
-  val weixinConfig = xml.fromXml(new FileInputStream(configFile),classOf[WeixinConfig])
+  val weixinConfig = xml.fromXmlStream(new FileInputStream(configFile),classOf[WeixinConfig])
 }

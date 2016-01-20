@@ -20,11 +20,11 @@ public class XMLUtils {
        return stream.toXML(obj);
     }
 
-    public <T> T fromXml(String xml,Class<T> clazz){
+    public <T> T fromXmlString(String xml,Class<T> clazz){
         return (T) stream.fromXML(xml);
     }
     
-    public <T> T fromXml(InputStream input,Class<T> clazz) throws IOException{
-    	return fromXml(IOUtils.toString(input, "utf-8"),clazz);
+    public <T> T fromXmlStream(InputStream input,Class<T> clazz) throws IOException{
+    	return fromXmlString(IOUtils.toString(input, "utf-8"),clazz);
     }
 }
