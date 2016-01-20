@@ -1,6 +1,6 @@
 package com.young.weixin
 
-import com.young.scala.weixin.api.WeixinApi
+import com.young.scala.weixin.api.WeixinSenderApi
 import com.young.scala.weixin.entity.GetAccessTokenParam
 
 /**
@@ -9,7 +9,7 @@ import com.young.scala.weixin.entity.GetAccessTokenParam
 object GetAccessTokenTest extends BaseTest{
 
   def main(args: Array[String]) {
-    val api = new WeixinApi()
+    val api = new WeixinSenderApi()
     val param: GetAccessTokenParam = GetAccessTokenParam("client_credential", weixinConfig.appInfo.appID, weixinConfig.appInfo.appsecret)
     val token = api.getAccessToken(param)
     println(token.getAccess_token)

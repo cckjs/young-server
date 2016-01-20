@@ -7,7 +7,7 @@ import com.young.scala.weixin.exception.WeixinException
 /**
  * Created by Administrator on 2016/1/19.
  */
-class WeixinApi extends BaseApi {
+class WeixinSenderApi extends BaseApi {
 
   @throws(classOf[WeixinException])
   def getAccessToken(getAccessTokenParam: GetAccessTokenParam): AccessToken = {
