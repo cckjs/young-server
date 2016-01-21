@@ -16,7 +16,7 @@ class CustomerServiceActor extends Actor with CustomerService with CustomerReque
   
   implicit def actorRefFactory = context
   
-  def receive = runRoute(customerRouter)
+  def receive = runRoute(customerRouter~customerRouter)
 
   def handleRequest(message: RequestMessage): Route =
     ctx => customerRequest(ctx, Props[RestServer], message)

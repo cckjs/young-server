@@ -55,7 +55,6 @@ object CustomerRequest {
 
 trait CustomerRequestCreator {
   this: Actor =>
-
   def customerRequest(requestContext: RequestContext, props: Props, message: RequestMessage) =
     context.actorOf(Props(new WithProps(requestContext, props, message)))
 }
