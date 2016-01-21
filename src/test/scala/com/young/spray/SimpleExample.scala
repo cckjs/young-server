@@ -24,5 +24,12 @@ object SimpleExample extends App with SimpleRoutingApp{
         }
       }
     }
+    path("receive"){
+      post{
+        complete{
+
+        }
+      }
+    }
   }
 }
