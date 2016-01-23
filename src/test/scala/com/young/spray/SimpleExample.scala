@@ -27,7 +27,7 @@ object SimpleExample extends App with SimpleRoutingApp{
     path("receive"){
       post{
         complete{
-
+          <h1>Say hello to spray</h1>
         }
       }
     }

@@ -10,7 +10,7 @@ import spray.routing.HttpService
 /**
  * Created by Administrator on 2016/1/21.
  */
-class LongExample extends Actor with HttpService {
+abstract class LongExample extends Actor with HttpService {
 
   implicit def actorRefFactory = context
 
@@ -18,7 +18,7 @@ class LongExample extends Actor with HttpService {
 
   implicit val handleExceptions=router
   
-  def receive = runRoute(router)
+ // def receive = runRoute(router)
 
   val router: spray.routing.Route = path("hello") {
     get {
