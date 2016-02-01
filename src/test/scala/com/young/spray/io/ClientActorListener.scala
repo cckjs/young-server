@@ -17,6 +17,8 @@ class ClientActorListener extends Actor {
       }
     case data: ConnectionData => println("receive server data -" + data.data.utf8String)
     case ConnectionFailed => println("connect server failed")
+      context.stop(self)
+      context.system.shutdown()
     case error: ConnectionError => println("receive server data error --" + error.message)
   }
 }

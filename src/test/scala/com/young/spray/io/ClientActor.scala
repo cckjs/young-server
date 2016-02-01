@@ -51,7 +51,7 @@ class ClientActor(remote: InetSocketAddress, listener: ActorRef) extends Actor {
 object ClientActor {
   def main(args: Array[String]) {
     val system = ActorSystem("client")
-    val remote = new InetSocketAddress("localhost", 9999)
+    val remote = new InetSocketAddress("localhost", 999)
     val listener = system.actorOf(Props[ClientActorListener])
     val client = system.actorOf(Props(new ClientActor(remote, listener)))
   }
