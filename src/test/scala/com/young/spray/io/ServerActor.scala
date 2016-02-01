@@ -21,6 +21,7 @@ class ServerActor extends Actor {
       context stop self
     case c@Connected(remote, local) =>
       val handler = context.actorOf(Props[SimpleHandler])
+      //这里connection和handler都不能是全局的,因为每个ClientActor都是一个实例,但是连接的服务端是同一个
       val connection = sender
       //这里意思是获取connection以后,注册一个处理数据的handler
       connection ! Register(handler)

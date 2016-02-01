@@ -12,7 +12,7 @@ import scala.collection.mutable.ListBuffer
 /**
  * Created by dell on 2016/1/29.
  */
-class ClientActor(remote: InetSocketAddress) extends Actor {
+class ClientActor(remote: InetSocketAddress, listener: ActorRef) extends Actor {
 
   var buffer: ListBuffer[ByteString] = ListBuffer[ByteString]()
 
@@ -26,30 +26,24 @@ class ClientActor(remote: InetSocketAddress) extends Actor {
 
   def receive = {
     case CommandFailed(_: Connect) =>
-      println("connect failed")
       context.stop(self)
-    case data: ByteString => buffer += data
-      println(buffer.length)
+      listener ! ConnectionFailed
     case c@Connected(remote, local) =>
       connection = sender()
       connection ! Register(self)
       context.become {
         case data: ByteString =>
-          if(buffer!=null&&buffer.length!=0){
-            for(temp<-buffer){
-              connection ! Write(temp)
-              println("client write data [" + temp.utf8String + "] to server's handler")
-            }
-            buffer = null
-          }
           connection ! Write(data)
-          println("client write data [" + data.utf8String + "] to server's handler")
-        case CommandFailed(w: Write) => println("OS buffer is full")
-        case Received(data) => println("client receive data =" + data.utf8String)
-        case "close" => connection ! Close
-        case _: ConnectionClosed => println("client is closed")
+        case CommandFailed(w: Write) =>
+          listener ! ConnectionError("OS buffer is full")
+        case Received(data) =>
+          listener ! ConnectionData(data)
+        case ConnectionClose => connection ! Close
+        case _: ConnectionClosed =>
           context.stop(self)
+          listener ! ConnectionClosed
       }
+      listener ! ConnectionCreated
   }
 
 }
@@ -58,11 +52,7 @@ object ClientActor {
   def main(args: Array[String]) {
     val system = ActorSystem("client")
     val remote = new InetSocketAddress("localhost", 9999)
-    val client = system.actorOf(Props(new ClientActor(remote)))
-    for(i <- 1 to 100){
-      Thread.sleep(10)
-      client ! ByteString("hello_"+i)
-    }
-
+    val listener = system.actorOf(Props[ClientActorListener])
+    val client = system.actorOf(Props(new ClientActor(remote, listener)))
   }
 }
