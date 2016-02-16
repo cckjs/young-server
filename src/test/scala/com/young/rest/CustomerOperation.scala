@@ -1,22 +1,20 @@
 package com.young.rest
 
 import java.util.Date
-import akka.event.Logging
 import akka.actor.Actor
+import akka.event.Logging
 
-/**
- * @author dell
- */
 trait CustomerOperations {
+
   def getById(id: Long) = {
     OneCustomer(new Customer(id, new Date(1000), "item1"))
   }
 
-  def all() = {
-    try {
+  def all() =  {
+    try{
       ListCustomers(List(new Customer(100, new Date(1000), "item1")))
-    } catch {
-      case e: Exception => {
+    } catch{
+      case e:Exception => {
         println(e.getMessage())
         List()
       }
@@ -24,26 +22,26 @@ trait CustomerOperations {
   }
 
   def delete(id: Long) = {
-    Deleted("deleted successfully")
+    Success("deleted successfully")
   }
 
-  def create(dueDate: Date, text: String) = {
+  def create (dueDate: Date, text: String) =  {
 
     Created("")
   }
 
-  def update(customer: Customer) = {
+  def update (customer: Customer) = {
     getById(customer.id)
   }
 }
 
-class CustomerActor extends Actor with CustomerOperations {
+class CustomerActor extends Actor with CustomerOperations{
   val log = Logging(context.system, this)
   def receive = {
-    case GetCustomer(id)               => sender ! getById(id)
-    case UpdateCustomer(item)          => sender ! update(item)
-    case DeleteCustomer(id)            => sender ! delete(id)
+    case GetCustomer(id) => sender ! getById(id)
+    case UpdateCustomer(item) => sender ! update(item)
+    case DeleteCustomer(id) => sender ! delete(id)
     case CreateCustomer(dueDate, text) => sender ! create(dueDate, text)
-    case AllCustomers                  => sender ! all()
+    case AllCustomers => sender ! all()
   }
 }

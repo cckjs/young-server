@@ -1,5 +1,6 @@
 package com.young.rest
 
+import com.young.rest.CustomerRequest.WithProps
 import spray.httpx.Json4sSupport
 import akka.actor._
 import scala.concurrent.duration._
@@ -9,32 +10,37 @@ import spray.http.StatusCodes._
 import akka.actor.SupervisorStrategy.Stop
 import spray.routing.RequestContext
 import akka.actor.OneForOneStrategy
-import com.young.rest.CustomerRequest.WithProps
-/**
- * @author dell
- */
-trait RestServer extends Actor with Json4sSupport {
+
+trait CustomerRequest extends Actor with Json4sSupport {
   def requestContext: RequestContext
+
   def target: ActorRef
+
   def message: RequestMessage
+
   import context._
 
-  setReceiveTimeout(Duration(2, "s"))
+  //  implicit def json4sFormat = DefaultFormats
+
+  setReceiveTimeout(2.seconds)
+
   target ! message
 
   def receive = {
-    case Created(location)        => complete(spray.http.StatusCodes.Created, location)
-    case OneCustomer(customer)    => complete(OK, customer)
+    case Created(location) => complete(spray.http.StatusCodes.Created, location)
+    case OneCustomer(customer) => complete(OK, customer)
     case ListCustomers(customers) => complete(OK, customers)
-    case Deleted(message)         => complete(OK, message)
-    case Error(message)           => complete(BadRequest, message)
-    case ReceiveTimeout           => complete(GatewayTimeout, "Request Timeout")
+    case Success(message) => complete(OK, message)
+    case Error(message) => complete(BadRequest, message)
+    case ReceiveTimeout => complete(GatewayTimeout, "Request Timeout")
   }
+
   def complete[T <: AnyRef](status: StatusCode, obj: T) = {
     requestContext.complete(status, obj)
     stop(self)
   }
-    override val supervisorStrategy =
+
+  override val supervisorStrategy =
     OneForOneStrategy() {
       case e => {
         complete(InternalServerError, Error(e.getMessage))
@@ -45,7 +51,7 @@ trait RestServer extends Actor with Json4sSupport {
 
 object CustomerRequest {
 
-  case class WithProps(requestContext: RequestContext, props: Props, message: RequestMessage) extends RestServer {
+  case class WithProps(requestContext: RequestContext, props: Props, message: RequestMessage) extends CustomerRequest {
     lazy val target = context.actorOf(props)
 
     implicit def json4sFormats = DefaultFormats
@@ -55,6 +61,7 @@ object CustomerRequest {
 
 trait CustomerRequestCreator {
   this: Actor =>
-  def customerRequest(requestContext: RequestContext, props: Props, message: RequestMessage) =
+
+  def customerRequest(requestContext: RequestContext, props: Props, message: RequestMessage):ActorRef =
     context.actorOf(Props(new WithProps(requestContext, props, message)))
 }
